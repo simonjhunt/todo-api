@@ -1,0 +1,62 @@
+{
+  // -----------------------------------------------------------------
+  // General project layout
+  // -----------------------------------------------------------------
+  "include": [
+    "src",               // where your production code lives
+    "tests"              // include test files if you want them typed
+  ],
+  "exclude": [
+    "**/__pycache__",
+    ".venv",             // your virtual‑env folder (adjust if named differently)
+    "build",
+    "dist"
+  ],
+
+  // -----------------------------------------------------------------
+  // Python interpreter / environment
+  // -----------------------------------------------------------------
+  "venvPath": ".",       // folder that contains the venv (relative to cwd)
+  "venv": ".venv",       // name of the virtual‑env directory
+  "pythonVersion": "3.11",   // set to the version you target
+  "pythonPlatform": "Linux", // or "Windows"/"Darwin" if you need platform‑specific stubs
+
+  // -----------------------------------------------------------------
+  // Type‑checking mode
+  // -----------------------------------------------------------------
+  // "basic" – default, fairly permissive
+  // "strict" – enables all strictness flags (recommended for new code)
+  "typeCheckingMode": "strict",
+
+  // -----------------------------------------------------------------
+  // Strictness toggles (you can enable/disable individually)
+  // -----------------------------------------------------------------
+  "reportMissingImports": true,          // warn when a module can’t be found
+  "reportUnusedImport": true,
+  "reportUnusedVariable": true,
+  "reportDuplicateImport": true,
+  "reportUnboundVariable": true,
+  "reportInvalidStringEscapeSequence": true,
+  "reportOptionalSubscript": true,
+  "reportOptionalMemberAccess": true,
+  "reportOptionalCall": true,
+  "reportOptionalIterable": true,
+  "reportGeneralTypeIssues": true,
+  "reportFunctionMemberAccess": true,
+  "reportTypedDictNotRequiredAccess": true,
+  "reportUntypedFunctionDecorator": true,
+  "reportUntypedClassDecorator": true,
+  "reportUntypedBaseClass": true,
+  "reportUntypedNamedTuple": true,
+  "reportPrivateImportUsage": true,
+  "reportConstantRedefinition": true,
+  "reportImportCycles": true,
+  "reportUnsupportedDunderAll": true,
+
+  // -----------------------------------------------------------------
+  // Additional options
+  // -----------------------------------------------------------------
+  "useLibraryCodeForTypes": true,   // allows Pyright to infer types from installed libs
+  "stubPath": "./typings",          // place custom .pyi stubs here if you have any
+  "ignore": ["**/migrations/**"]   // example: ignore Django migration files
+}
