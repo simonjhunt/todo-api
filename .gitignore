@@ -207,4 +207,4 @@ marimo/_lsp/
 __marimo__/
 
 # Ignore the directory containing the database
-database/
+data/
