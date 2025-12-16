@@ -5,4 +5,4 @@ set -euo pipefail
 
 # Use the same Python interpreter that runs pre‑commit
 # (if you use Poetry, you can activate the venv here)
-uv run black "$@"
+uv run black .
