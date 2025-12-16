@@ -10,4 +10,4 @@ set -euo pipefail
 #   poetry run isort "$@"
 #
 # Otherwise, just call isort directly (assumes it’s on $PATH).
-uv run isort "$@"
+uv run isort .

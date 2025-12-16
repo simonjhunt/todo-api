@@ -6,4 +6,4 @@ set -euo pipefail
 
 # Run ruff in “check + fix” mode.
 # If you use Poetry, you can do: poetry run ruff check "$@" --fix
-uv run ruff check "$@" --fix
+uv run ruff check . --fix
