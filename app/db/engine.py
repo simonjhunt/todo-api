@@ -1,5 +1,7 @@
-from sqlmodel import create_engine, SQLModel
+from sqlmodel import SQLModel, create_engine
+
 from app.core.config import settings
+
 
 def get_engine():
     """
@@ -12,6 +14,7 @@ def get_engine():
         echo=settings.DEBUG,
         connect_args={"check_same_thread": False},
     )
+
 
 # Export the metadata for table creation (unchanged)
 metadata = SQLModel.metadata

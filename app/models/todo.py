@@ -2,12 +2,14 @@
 from datetime import datetime, timezone
 from typing import Optional
 
-from sqlmodel import SQLModel, Field
 from sqlalchemy import Column, DateTime
+from sqlmodel import Field, SQLModel
+
 
 class ToDoBase(SQLModel):
     title: str = Field(min_length=3, max_length=100)
     description: str = Field(min_length=20, max_length=100)
+
 
 class ToDoDB(ToDoBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)

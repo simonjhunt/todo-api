@@ -1,10 +1,9 @@
 # tests/test_endpoints.py
 from fastapi import status
-
-from app.schemas.todo_get import ToDoGet
-
 from fastapi.testclient import TestClient
+
 from app.main import app
+from app.schemas.todo_get import ToDoGet
 
 
 # -----------------------------------------------------------------
