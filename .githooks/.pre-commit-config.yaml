@@ -34,6 +34,6 @@ repos:
     hooks:
       - id: run-tests-before-push
         name: Run pytest suite before push
-        entry: pytest -q
+        entry: bash -c 'PYTHONPATH=$(pwd) pytest -q'
         language: system
         stages: [pre-push]           # <-- this makes it a pre‑push hook
