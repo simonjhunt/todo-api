@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:   # manual trigger
+
+jobs:
+  test:
+    # Run on both Ubuntu and macOS to catch OS‑specific issues
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ['3.11']
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # -------------------------------------------------
+      # 1️⃣ Checkout the repo
+      # -------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -------------------------------------------------
+      # 2️⃣ Set up Python (needed for the interpreter)
+      # -------------------------------------------------
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # -------------------------------------------------
+      # 3️⃣ Install uv (Linux/macOS)
+      # -------------------------------------------------
+      - name: Install uv
+        run: |
+          curl -LsSf https://github.com/astral-sh/uv/releases/latest/download/uv-installer.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      # -------------------------------------------------
+      # 4️⃣ Cache uv's download cache
+      # -------------------------------------------------
+      - name: Cache uv downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: ${{ runner.os }}-uv-${{ hashFiles('uv.lock', 'requirements.txt', 'pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-uv-
+
+      # -------------------------------------------------
+      # 5️⃣ Install project dependencies (using uv.lock)
+      # -------------------------------------------------
+      - name: Install dependencies (uv sync)
+        run: uv sync --frozen --cache-dir ~/.cache/pip
+
+      # -------------------------------------------------
+      # 7️⃣ Run ruff (lint)
+      # -------------------------------------------------
+      - name: Run ruff
+        run: uv run ruff check .
+
+      # -------------------------------------------------
+      # 8️⃣ Run pytest (with coverage)
+      # -------------------------------------------------
+      - name: Run tests
+        run: uv run pytest -q --cov=app --cov-report=xml
+
+      # # -------------------------------------------------
+      # # 9️⃣ Upload coverage report (optional)
+      # # -------------------------------------------------
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     files: coverage.xml
+      #     token: ${{ secrets.CODECOV_TOKEN }}
