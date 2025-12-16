@@ -1,8 +1,15 @@
-# .githooks/scripts/run_black.sh
 #!/usr/bin/env bash
-# Fail fast if anything goes wrong
+# ---------------------------------------------------------
+# run_black.sh – wrapper for Black used by pre‑commit
+# ---------------------------------------------------------
+# Exit immediately on any error, treat unset variables as errors,
+# and propagate failures through pipes.
 set -euo pipefail
 
-# Use the same Python interpreter that runs pre‑commit
-# (if you use Poetry, you can activate the venv here)
+# If you use Poetry, uncomment the next line so the script runs
+# inside the project's virtual environment:
+#   poetry run black "$@"
+#
+# If you rely on a globally installed Black (or a venv already active),
+# the plain command works:
 uv run black .
