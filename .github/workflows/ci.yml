@@ -8,6 +8,32 @@ on:
   workflow_dispatch:   # manual trigger
 
 jobs:
+  sast_scan:
+    name: Run Bandit Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.13
+
+    - name: Install Bandit
+      run: pip install bandit
+
+    - name: Run Bandit Scan
+      run: bandit -ll -ii -r . -f json -o bandit-report.json
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: bandit-findings
+        path: bandit-report.json
+  
   test:
     # Run on both Ubuntu and macOS to catch OS‑specific issues
     strategy:
@@ -17,31 +43,19 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      # -------------------------------------------------
-      # 1️⃣ Checkout the repo
-      # -------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # -------------------------------------------------
-      # 2️⃣ Set up Python (needed for the interpreter)
-      # -------------------------------------------------
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      # -------------------------------------------------
-      # 3️⃣ Install uv (Linux/macOS)
-      # -------------------------------------------------
       - name: Install uv
         run: |
           curl -LsSf https://github.com/astral-sh/uv/releases/latest/download/uv-installer.sh | sh
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-      # -------------------------------------------------
-      # 4️⃣ Cache uv's download cache
-      # -------------------------------------------------
       - name: Cache uv downloads
         uses: actions/cache@v4
         with:
@@ -50,9 +64,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-uv-
 
-      # -------------------------------------------------
-      # 5️⃣ Install project dependencies (using uv.lock)
-      # -------------------------------------------------
       - name: Install dependencies (uv sync)
         run: uv sync --frozen --cache-dir ~/.cache/pip
 
