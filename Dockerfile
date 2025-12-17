@@ -61,5 +61,8 @@ USER $APP_UID:$APP_GID
 # Expose the port the application will listen on
 EXPOSE 8000
 
+# Run tests so that build fails if tests fail
+RUN pytest -v
+
 # Run the FastAPI application using uv run and uvicorn
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
