@@ -1,4 +1,4 @@
-from sqlmodel import SQLModel, create_engine
+from sqlmodel import SQLModel, StaticPool, create_engine
 
 from app.core.config import settings
 
@@ -12,6 +12,7 @@ def get_engine():
     return create_engine(
         settings.DATABASE_URL,
         echo=settings.DEBUG,
+        poolclass=StaticPool,
         connect_args={"check_same_thread": False},
     )
 

@@ -1,18 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List
 
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session
 
 from app.db.session import get_session
-from app.schemas.todo_base import ToDoPost, ToDoPatch
+from app.schemas.todo_base import ToDoPatch, ToDoPost
 from app.schemas.todo_get import ToDoGet
-from app.services.todo_service import (
-    list_todos,
-    get_todo,
-    create_todo,
-    update_todo,
-    delete_todo,
-)
+from app.services.todo_service import (create_todo, delete_todo, get_todo,
+                                       list_todos, update_todo)
 
 router = APIRouter(prefix="/todos", tags=["todos"])
 

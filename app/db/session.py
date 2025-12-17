@@ -1,6 +1,8 @@
 from typing import Generator
+
 from sqlmodel import Session  # sync Session (will work with the sync engine)
-from .engine import get_engine
+
+from .engine import get_engine, metadata
 
 
 def get_session() -> Generator[Session, None, None]:
@@ -11,5 +13,6 @@ def get_session() -> Generator[Session, None, None]:
     (production or the temporary test DB).
     """
     engine = get_engine()
+    metadata.create_all(engine)
     with Session(engine) as sess:
         yield sess

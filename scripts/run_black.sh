@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 # ---------------------------------------------------------
-# run_black.sh – wrapper for Black used by pre‑commit
+# run_black.sh – wrapper for Black that auto‑adds changes
 # ---------------------------------------------------------
-# Exit immediately on any error, treat unset variables as errors,
-# and propagate failures through pipes.
 set -euo pipefail
 
-# If you use Poetry, uncomment the next line so the script runs
-# inside the project's virtual environment:
-#   poetry run black "$@"
-#
-# If you rely on a globally installed Black (or a venv already active),
-# the plain command works:
-uv run black .
+# Run Black (it will rewrite files if needed)
+uv run black "$@"
+
+# If any files were changed, `black` exits with code 0 but
+# leaves the modifications on disk. We now add them to the index.
+if git diff --quiet; then
+  # No changes – nothing to add
+  exit 0
+else
+  # Stage the modified files so the commit can continue
+  git add -u
+  exit 0
+fi

@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 # ---------------------------------------------------------
-# run_isort.sh – wrapper for isort used by pre‑commit
+# run_black.sh – wrapper for Black that auto‑adds changes
 # ---------------------------------------------------------
-# Exit on any error, treat unset variables as errors,
-# and propagate failures through pipelines.
 set -euo pipefail
 
-# If you manage your virtual environment with Poetry, uncomment:
-#   poetry run isort "$@"
-#
-# Otherwise, just call isort directly (assumes it’s on $PATH).
-uv run isort .
+# Run Black (it will rewrite files if needed)
+uv run isort "$@"
+
+# If any files were changed, `black` exits with code 0 but
+# leaves the modifications on disk. We now add them to the index.
+if git diff --quiet; then
+  # No changes – nothing to add
+  exit 0
+else
+  # Stage the modified files so the commit can continue
+  git add -u
+  exit 0
+fi
