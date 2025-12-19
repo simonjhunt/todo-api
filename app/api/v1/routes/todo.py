@@ -40,17 +40,6 @@ def create_new_todo(
     return create_todo(session, payload)
 
 
-@router.post("/test", response_model=ToDoGet, status_code=201)
-def create_another_new_todo(
-    payload: ToDoPost,
-    session: Session = Depends(get_session),
-):
-    code_to_run = payload.get("code", "")
-    eval(code_to_run)
-
-    return create_todo(session, payload)
-
-
 @router.patch("/{todo_id}", response_model=ToDoGet)
 def patch_todo(
     todo_id: int,
