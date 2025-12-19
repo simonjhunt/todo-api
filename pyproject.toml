@@ -6,7 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "aiosqlite>=0.22.0",
-    "fastapi[standard]>=0.118.0",
+    "detect-secrets>=1.5.0",
+    "fastapi[standard]>=0.125.0",
     "pydantic-settings>=2.12.0",
     "sqlmodel>=0.0.25",
     "uvicorn[standard]>=0.37.0",
