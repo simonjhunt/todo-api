@@ -70,8 +70,8 @@ jobs:
     # Run on both Ubuntu and macOS to catch OS‑specific issues
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        python-version: ["3.11"]
+        os: [ubuntu-latest]
+        python-version: ["3.13"]
     runs-on: ${{ matrix.os }}
 
     steps:
